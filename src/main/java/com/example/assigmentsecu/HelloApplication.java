@@ -15,16 +15,16 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
 
-//        Scanner input = new Scanner(System.in);
-//        System.out.print("Enter your password: ");
-//        String password = input.nextLine();
-//        System.out.println(MyWay.passwordChecker(password));
-        launch();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter your password: ");
+        String password = input.nextLine();
+        System.out.println(MyWay.passwordChecker(password));
+//        launch();
     }
 
     public static void checkPasswordStrength(String password) {
         double possibilities = calculatePossibilities(password);
-        double mean = calculateMean(password, possibilities);
+        double mean = calculateMean(password);
          variance = calculateVariance(password, mean);
          entropy = calculateEntropy(possibilities, password.length());
     }
@@ -70,7 +70,7 @@ public class HelloApplication extends Application {
     }
 
 
-    private static double calculateMean(String password, double possibilities) {
+    private static double calculateMean(String password) {
         double sum = 0;
         for (char ch : password.toCharArray()) {
             if(Character.isDigit(ch)) {
@@ -79,7 +79,7 @@ public class HelloApplication extends Application {
                 sum += (int)ch;
             }
         }
-        return sum / possibilities;
+        return sum / password.length();
     }
 
     private static double calculateVariance(String password, double mean) {
@@ -106,17 +106,16 @@ public class HelloApplication extends Application {
             entropy = 0;
             comments = "";
             String password = passwordField.getText();
+            //
             checkPasswordStrength(password);
             if (password.length() < 8){
                 comments+= "Your password is too short\n";
             }
             comments+= "Your password is: ";
 
-            if (entropy > 90 && variance > 3500) {
+            if (entropy > 90 && variance >= 500) {
                 comments += "Strong";
-            } else if ((entropy >= 40 && entropy <= 85 && variance >= 3500) ||
-                    (entropy > 85 && variance >= 2500 && variance <= 3500) ||
-                    (entropy >= 40 && entropy <= 85 && variance >= 2500 && variance <= 3500)) {
+            } else if ((entropy >= 40 && entropy <= 89 && variance >= 70 && variance < 500)) {
                 comments += "Medium";
             } else {
                 comments += "Weak";
